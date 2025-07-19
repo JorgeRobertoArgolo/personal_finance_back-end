@@ -81,16 +81,16 @@ public class UsuarioService implements UsuarioIService {
     /**
      * Remove um usuário do banco de dados.
      *
-     * @param usuario usuário a ser removido
+     * @param id id do usuário a ser removido
      * @throws RuntimeException se o usuário não existir
      */
     @Override
-    public void delete(Usuario usuario) {
-        if (!usuarioRepository.existsById(usuario.getId())) {
+    public void delete(Long id) {
+        if (!usuarioRepository.existsById(id)) {
             throw new RuntimeException(String.format(
-                    "Usuário com id={%d} não encontrado.", usuario.getId()));
+                    "Usuário com id={%d} não encontrado.", id));
         }
-        usuarioRepository.delete(usuario);
+        usuarioRepository.delete(this.findById(id));
     }
 
     /**

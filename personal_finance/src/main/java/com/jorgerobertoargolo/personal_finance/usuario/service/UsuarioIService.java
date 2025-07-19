@@ -46,9 +46,9 @@ public interface UsuarioIService {
     /**
      * Exclui um usuário.
      *
-     * @param usuario o usuário a ser excluído
+     * @param id o id do usuário a ser excluído
      */
-    public abstract void delete(Usuario usuario);
+    public abstract void delete(Long id);
 
     /**
      * Busca um usuário pelo e-mail.
