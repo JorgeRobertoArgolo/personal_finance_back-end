@@ -1,7 +1,7 @@
 package com.jorgerobertoargolo.personal_finance.usuario.controller;
 
-import com.jorgerobertoargolo.personal_finance.infrastructure.util.ObjectMapperUtil;
-import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioResponseDto;
+import com.jorgerobertoargolo.personal_finance.infrastructure.mapper.ObjectMapperUtil;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDto;
 import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioPostRequestDto;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.service.UsuarioIService;
@@ -33,7 +33,7 @@ public class UsuarioController {
      * Recupera a lista completa de usuários cadastrados.
      *
      * @return {@link ResponseEntity} contendo a lista de usuários convertida para
-     *         {@link UsuarioResponseDto} e status HTTP 200 (OK).
+     *         {@link UsuarioGetResponseDto} e status HTTP 200 (OK).
      */
     @GetMapping(path = "/findall",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,7 +41,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapperUtil.mapAll(
                         this.usuarioService.findAll(),
-                        UsuarioResponseDto.class
+                        UsuarioGetResponseDto.class
                 ));
     }
 
@@ -49,11 +49,11 @@ public class UsuarioController {
      * Salva um novo usuário com base nos dados fornecidos no corpo da requisição.
      * <p>
      * O objeto recebido é convertido em uma entidade {@link Usuario}, persistido no banco,
-     * e o resultado é convertido em um {@link UsuarioResponseDto} para retorno seguro.
+     * e o resultado é convertido em um {@link UsuarioGetResponseDto} para retorno seguro.
      * </p>
      *
      * @param usuarioPostRequestDto Objeto DTO contendo os dados do usuário a ser salvo.
-     * @return {@link ResponseEntity} contendo o usuário salvo convertido em {@link UsuarioResponseDto}
+     * @return {@link ResponseEntity} contendo o usuário salvo convertido em {@link UsuarioGetResponseDto}
      *         e status HTTP 201 (Created).
      */
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +62,7 @@ public class UsuarioController {
                 (objectMapperUtil.map(usuarioPostRequestDto, Usuario.class))
         );
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(objectMapperUtil.map(usuario, UsuarioResponseDto.class));
+                .body(objectMapperUtil.map(usuario, UsuarioGetResponseDto.class));
     }
 
     /**
@@ -96,13 +96,13 @@ public class UsuarioController {
      * Recupera um usuário pelo email fornecido como parâmetro de consulta.
      *
      * @param email O email do usuário a ser buscado.
-     * @return {@link ResponseEntity} contendo o usuário convertido para {@link UsuarioResponseDto}
+     * @return {@link ResponseEntity} contendo o usuário convertido para {@link UsuarioGetResponseDto}
      *         e status HTTP 200 (OK). Caso o usuário não seja encontrado, a exceção do service
      *         será propagada (ou você pode tratar para retornar 404).
      */
     @GetMapping(path = "/findbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findByEmail(@RequestParam String email) {
         Usuario usuario = usuarioService.findByEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioResponseDto.class));
+        return ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioGetResponseDto.class));
     }
 }
