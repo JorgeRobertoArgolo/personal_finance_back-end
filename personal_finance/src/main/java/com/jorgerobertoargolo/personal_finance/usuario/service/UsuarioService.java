@@ -1,5 +1,6 @@
 package com.jorgerobertoargolo.personal_finance.usuario.service;
 
+import com.jorgerobertoargolo.personal_finance.infrastructure.exception.BusinessException;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +38,12 @@ public class UsuarioService implements UsuarioIService {
      *
      * @param id identificador do usuário
      * @return o usuário correspondente
-     * @throws RuntimeException se o usuário não for encontrado
+     * @throws BusinessException se o usuário não for encontrado
      */
     @Override
     public Usuario findById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("Usuário com id={%d} não foi encontrado.", id))
+                () -> new BusinessException(String.format("Usuário com id={%d} não foi encontrado.", id))
         );
     }
 
@@ -51,14 +52,14 @@ public class UsuarioService implements UsuarioIService {
      *
      * @param usuario objeto do tipo {@link Usuario}
      * @return o usuário salvo
-     * @throws RuntimeException se ocorrer erro durante a persistência (ex: e-mail duplicado)
+     * @throws BusinessException se ocorrer erro durante a persistência (ex: e-mail duplicado)
      */
     @Override
     public Usuario save(Usuario usuario) {
         try {
             return usuarioRepository.save(usuario);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar usuário. Possivelmente o e-mail já está cadastrado.");
+            throw new BusinessException("Erro ao salvar usuário. Possivelmente o e-mail já está cadastrado.");
         }
     }
 
@@ -67,12 +68,12 @@ public class UsuarioService implements UsuarioIService {
      *
      * @param usuario objeto com os dados atualizados
      * @return o usuário atualizado
-     * @throws RuntimeException se o usuário não existir
+     * @throws BusinessException se o usuário não existir
      */
     @Override
     public Usuario update(Usuario usuario) {
         if (!usuarioRepository.existsById(usuario.getId())) {
-            throw new RuntimeException(String.format(
+            throw new BusinessException(String.format(
                     "Usuário com id={%d} não encontrado.", usuario.getId()));
         }
         return usuarioRepository.save(usuario);
@@ -82,12 +83,12 @@ public class UsuarioService implements UsuarioIService {
      * Remove um usuário do banco de dados.
      *
      * @param id id do usuário a ser removido
-     * @throws RuntimeException se o usuário não existir
+     * @throws BusinessException se o usuário não existir
      */
     @Override
     public void delete(Long id) {
         if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException(String.format(
+            throw new BusinessException(String.format(
                     "Usuário com id={%d} não encontrado.", id));
         }
         usuarioRepository.delete(this.findById(id));
@@ -98,13 +99,13 @@ public class UsuarioService implements UsuarioIService {
      *
      * @param email e-mail do usuário
      * @return o usuário correspondente
-     * @throws RuntimeException se o usuário não for encontrado
+     * @throws BusinessException se o usuário não for encontrado
      */
     @Override
     public Usuario findByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         if (usuario == null) {
-            throw new RuntimeException(String.format(
+            throw new BusinessException(String.format(
                     "Usuário com e-mail {%s} não encontrado.", email));
         }
         return usuario;
