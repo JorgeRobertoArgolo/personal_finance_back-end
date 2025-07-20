@@ -88,7 +88,9 @@ public class UsuarioController {
      */
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update (@RequestBody UsuarioPostRequestDto usuarioPostRequestDto) {
-        usuarioService.update(objectMapperUtil.map(usuarioPostRequestDto, Usuario.class));
+        Usuario usuario = objectMapperUtil.map(usuarioPostRequestDto, Usuario.class);
+        usuario.setId(usuarioPostRequestDto.getId());
+        usuarioService.update(usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
