@@ -5,6 +5,7 @@ import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDto
 import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioPostRequestDto;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.service.UsuarioIService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,7 +58,7 @@ public class UsuarioController {
      *         e status HTTP 201 (Created).
      */
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody UsuarioPostRequestDto usuarioPostRequestDto) {
+    public ResponseEntity<?> save(@RequestBody @Valid UsuarioPostRequestDto usuarioPostRequestDto) {
         Usuario usuario = usuarioService.save(
                 (objectMapperUtil.map(usuarioPostRequestDto, Usuario.class))
         );
@@ -87,7 +88,7 @@ public class UsuarioController {
      * @return {@link ResponseEntity} com status HTTP 204 (No Content) em caso de sucesso.
      */
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update (@RequestBody UsuarioPostRequestDto usuarioPostRequestDto) {
+    public ResponseEntity<Void> update (@RequestBody @Valid UsuarioPostRequestDto usuarioPostRequestDto) {
         Usuario usuario = objectMapperUtil.map(usuarioPostRequestDto, Usuario.class);
         usuario.setId(usuarioPostRequestDto.getId());
         usuarioService.update(usuario);
