@@ -3,6 +3,7 @@ package com.jorgerobertoargolo.personal_finance.usuario.service;
 import com.jorgerobertoargolo.personal_finance.infrastructure.exception.BusinessException;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.repository.UsuarioRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class UsuarioService implements UsuarioIService {
      *
      * @return lista de usuários
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
@@ -40,6 +42,7 @@ public class UsuarioService implements UsuarioIService {
      * @return o usuário correspondente
      * @throws BusinessException se o usuário não for encontrado
      */
+    @Transactional(readOnly = true)
     @Override
     public Usuario findById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(
@@ -54,6 +57,7 @@ public class UsuarioService implements UsuarioIService {
      * @return o usuário salvo
      * @throws BusinessException se ocorrer erro durante a persistência (ex: e-mail duplicado)
      */
+    @Transactional
     @Override
     public Usuario save(Usuario usuario) {
         try {
@@ -70,6 +74,7 @@ public class UsuarioService implements UsuarioIService {
      * @return o usuário atualizado
      * @throws BusinessException se o usuário não existir
      */
+    @Transactional
     @Override
     public Usuario update(Usuario usuario) {
         if (!usuarioRepository.existsById(usuario.getId())) {
@@ -85,6 +90,7 @@ public class UsuarioService implements UsuarioIService {
      * @param id id do usuário a ser removido
      * @throws BusinessException se o usuário não existir
      */
+    @Transactional
     @Override
     public void delete(Long id) {
         if (!usuarioRepository.existsById(id)) {
@@ -101,6 +107,7 @@ public class UsuarioService implements UsuarioIService {
      * @return o usuário correspondente
      * @throws BusinessException se o usuário não for encontrado
      */
+    @Transactional(readOnly = true)
     @Override
     public Usuario findByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
