@@ -1,5 +1,6 @@
 package com.jorgerobertoargolo.personal_finance.usuario.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import org.hibernate.validator.constraints.Length;
 public class UsuarioPostRequestDto {
 
     @JsonProperty(value = "id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
     @JsonProperty(value = "nome")
