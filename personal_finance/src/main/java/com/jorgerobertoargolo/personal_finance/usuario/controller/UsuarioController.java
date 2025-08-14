@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/usuarios")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UsuarioController {
 
     private final UsuarioIService usuarioService;
