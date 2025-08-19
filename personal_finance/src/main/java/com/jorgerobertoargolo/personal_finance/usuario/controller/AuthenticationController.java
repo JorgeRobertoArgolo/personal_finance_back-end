@@ -1,8 +1,8 @@
 package com.jorgerobertoargolo.personal_finance.usuario.controller;
 
 import com.jorgerobertoargolo.personal_finance.infrastructure.mapper.ObjectMapperUtil;
-import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDto;
-import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioLoginDto;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDTO;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioLoginDTO;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.service.UsuarioIService;
 import jakarta.validation.Valid;
@@ -23,10 +23,10 @@ public class AuthenticationController {
     private final ObjectMapperUtil objectMapperUtil;
 
     @PostMapping("/auth")
-    public ResponseEntity<?> authenticate(@RequestBody @Valid UsuarioLoginDto dto) {
+    public ResponseEntity<?> authenticate(@RequestBody @Valid UsuarioLoginDTO dto) {
         Usuario usuario = usuarioService.findByEmail(dto.getEmail());
         if (usuario != null && usuario.getSenha().equals(dto.getSenha())) {
-            return  ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioGetResponseDto.class));
+            return  ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class));
         }
 
         log.error("Credenciais incorretas");

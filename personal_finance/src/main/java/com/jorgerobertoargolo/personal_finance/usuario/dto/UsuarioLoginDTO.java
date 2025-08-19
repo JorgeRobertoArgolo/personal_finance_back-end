@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UsuarioLoginDto {
+public class UsuarioLoginDTO {
 
     @NotBlank
     @NotNull

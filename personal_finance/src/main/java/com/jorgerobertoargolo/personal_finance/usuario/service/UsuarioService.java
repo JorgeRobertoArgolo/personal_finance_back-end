@@ -1,6 +1,8 @@
 package com.jorgerobertoargolo.personal_finance.usuario.service;
 
 import com.jorgerobertoargolo.personal_finance.infrastructure.exception.BusinessException;
+import com.jorgerobertoargolo.personal_finance.infrastructure.mapper.ObjectMapperUtil;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDTO;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.repository.UsuarioRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import java.util.List;
 public class UsuarioService implements UsuarioIService {
 
     private final UsuarioRepository usuarioRepository;
+    private final ObjectMapperUtil objectMapperUtil;
 
     /**
      * Retorna uma lista com todos os usuários cadastrados.
@@ -31,8 +34,8 @@ public class UsuarioService implements UsuarioIService {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+    public List<UsuarioGetResponseDTO> findAll() {
+        return objectMapperUtil.mapAll(usuarioRepository.findAll(),  UsuarioGetResponseDTO.class);
     }
 
     /**
@@ -44,10 +47,11 @@ public class UsuarioService implements UsuarioIService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Usuario findById(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(
+    public UsuarioGetResponseDTO findById(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new BusinessException(String.format("Usuário com id={%d} não foi encontrado.", id))
         );
+        return objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class);
     }
 
     /**
@@ -59,9 +63,9 @@ public class UsuarioService implements UsuarioIService {
      */
     @Transactional
     @Override
-    public Usuario save(Usuario usuario) {
+    public UsuarioGetResponseDTO save(Usuario usuario) {
         try {
-            return usuarioRepository.save(usuario);
+            return objectMapperUtil.map(usuarioRepository.save(usuario), UsuarioGetResponseDTO.class);
         } catch (Exception e) {
             throw new BusinessException("Erro ao salvar usuário. Possivelmente o e-mail já está cadastrado.");
         }
@@ -76,12 +80,12 @@ public class UsuarioService implements UsuarioIService {
      */
     @Transactional
     @Override
-    public Usuario update(Usuario usuario) {
+    public UsuarioGetResponseDTO update(Usuario usuario) {
         if (!usuarioRepository.existsById(usuario.getId())) {
             throw new BusinessException(String.format(
                     "Usuário com id={%d} não encontrado.", usuario.getId()));
         }
-        return usuarioRepository.save(usuario);
+        return objectMapperUtil.map(usuarioRepository.save(usuario),  UsuarioGetResponseDTO.class);
     }
 
     /**
@@ -97,7 +101,7 @@ public class UsuarioService implements UsuarioIService {
             throw new BusinessException(String.format(
                     "Usuário com id={%d} não encontrado.", id));
         }
-        usuarioRepository.delete(this.findById(id));
+        usuarioRepository.delete(usuarioRepository.findById(id).get());
     }
 
     /**

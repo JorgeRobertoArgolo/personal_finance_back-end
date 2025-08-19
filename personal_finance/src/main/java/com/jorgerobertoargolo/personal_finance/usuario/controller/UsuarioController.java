@@ -1,8 +1,11 @@
 package com.jorgerobertoargolo.personal_finance.usuario.controller;
 
 import com.jorgerobertoargolo.personal_finance.infrastructure.mapper.ObjectMapperUtil;
-import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDto;
-import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioPostRequestDto;
+import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.PerfilDeUsuario;
+import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.enums.NivelAcesso;
+import com.jorgerobertoargolo.personal_finance.person.entity.Pessoa;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioGetResponseDTO;
+import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioPostRequestDTO;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.service.UsuarioIService;
 import jakarta.validation.Valid;
@@ -35,7 +38,7 @@ public class UsuarioController {
      * Recupera a lista completa de usuários cadastrados.
      *
      * @return {@link ResponseEntity} contendo a lista de usuários convertida para
-     *         {@link UsuarioGetResponseDto} e status HTTP 200 (OK).
+     *         {@link UsuarioGetResponseDTO} e status HTTP 200 (OK).
      */
     @GetMapping(path = "/findall",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +46,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapperUtil.mapAll(
                         this.usuarioService.findAll(),
-                        UsuarioGetResponseDto.class
+                        UsuarioGetResponseDTO.class
                 ));
     }
 
@@ -51,20 +54,30 @@ public class UsuarioController {
      * Salva um novo usuário com base nos dados fornecidos no corpo da requisição.
      * <p>
      * O objeto recebido é convertido em uma entidade {@link Usuario}, persistido no banco,
-     * e o resultado é convertido em um {@link UsuarioGetResponseDto} para retorno seguro.
+     * e o resultado é convertido em um {@link UsuarioGetResponseDTO} para retorno seguro.
      * </p>
      *
      * @param usuarioPostRequestDto Objeto DTO contendo os dados do usuário a ser salvo.
-     * @return {@link ResponseEntity} contendo o usuário salvo convertido em {@link UsuarioGetResponseDto}
+     * @return {@link ResponseEntity} contendo o usuário salvo convertido em {@link UsuarioGetResponseDTO}
      *         e status HTTP 201 (Created).
      */
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody @Valid UsuarioPostRequestDto usuarioPostRequestDto) {
-        Usuario usuario = usuarioService.save(
-                (objectMapperUtil.map(usuarioPostRequestDto, Usuario.class))
-        );
+    public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO usuarioPostRequestDto) {
+
+        PerfilDeUsuario perfil = new PerfilDeUsuario();
+        perfil.setAcesso(NivelAcesso.COMUM);
+        perfil.setDescricao(usuarioPostRequestDto.getPerfil().getDescricao());
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setNome(usuarioPostRequestDto.getNome());
+
+        Usuario usuario = objectMapperUtil.map(usuarioPostRequestDto, Usuario.class);
+        usuario.setPessoa(pessoa);
+        usuario.setPerfil(perfil);
+
+        UsuarioGetResponseDTO dto = usuarioService.save((usuario));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(objectMapperUtil.map(usuario, UsuarioGetResponseDto.class));
+                .body(dto);
     }
 
     /**
@@ -89,7 +102,7 @@ public class UsuarioController {
      * @return {@link ResponseEntity} com status HTTP 204 (No Content) em caso de sucesso.
      */
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update (@RequestBody @Valid UsuarioPostRequestDto usuarioPostRequestDto) {
+    public ResponseEntity<Void> update (@RequestBody @Valid UsuarioPostRequestDTO usuarioPostRequestDto) {
         Usuario usuario = objectMapperUtil.map(usuarioPostRequestDto, Usuario.class);
         usuario.setId(usuarioPostRequestDto.getId());
         usuarioService.update(usuario);
@@ -100,13 +113,13 @@ public class UsuarioController {
      * Recupera um usuário pelo email fornecido como parâmetro de consulta.
      *
      * @param email O email do usuário a ser buscado.
-     * @return {@link ResponseEntity} contendo o usuário convertido para {@link UsuarioGetResponseDto}
+     * @return {@link ResponseEntity} contendo o usuário convertido para {@link UsuarioGetResponseDTO}
      *         e status HTTP 200 (OK). Caso o usuário não seja encontrado, a exceção do service
      *         será propagada (ou você pode tratar para retornar 404).
      */
     @GetMapping(path = "/findbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findByEmail(@RequestParam String email) {
+    public ResponseEntity<UsuarioGetResponseDTO> findByEmail(@RequestParam String email) {
         Usuario usuario = usuarioService.findByEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioGetResponseDto.class));
+        return ResponseEntity.status(HttpStatus.OK).body(objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class));
     }
 }

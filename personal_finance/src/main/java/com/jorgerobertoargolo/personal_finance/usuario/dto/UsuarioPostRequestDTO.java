@@ -2,6 +2,8 @@ package com.jorgerobertoargolo.personal_finance.usuario.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.dto.PerfilDeUsuarioPostRequestDTO;
+import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.PerfilDeUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,9 +15,8 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioPostRequestDto {
+public class UsuarioPostRequestDTO {
 
-    @JsonProperty(value = "id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
@@ -33,4 +34,9 @@ public class UsuarioPostRequestDto {
     @NotNull (message = "A senha não pode ser vazio.")
     @Length(min = 4, max = 100)
     private String senha;
+
+    @JsonProperty(value = "perfil")
+    private PerfilDeUsuarioPostRequestDTO perfil;
+
+
 }
