@@ -1,28 +1,30 @@
 package com.jorgerobertoargolo.personal_finance.usuario.entity;
 
 import com.jorgerobertoargolo.personal_finance.infrastructure.entity.PersistenceEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.PerfilDeUsuario;
+import com.jorgerobertoargolo.personal_finance.person.entity.Pessoa;
+import com.jorgerobertoargolo.personal_finance.transacao.entity.Transacao;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidade que representa um usuário do sistema.
  *
- * <p>Esta classe herda de {@link com.jorgerobertoargolo.personal_finance.infrastructure.entity.PersistenceEntity}
- * e possui um identificador único {@code id} gerado automaticamente.</p>
+ * <p>Um usuário é definido por suas credenciais de acesso ({@code email} e {@code senha})
+ * e obrigatoriamente possui:</p>
  *
- * <p>Os atributos principais do usuário incluem:
  * <ul>
- *     <li>{@code nome}: o nome completo do usuário;</li>
- *     <li>{@code email}: o endereço de e-mail do usuário (único);</li>
- *     <li>{@code senha}: a senha de acesso do usuário.</li>
+ *   <li>Um {@link PerfilDeUsuario}, que define suas permissões e nível de acesso.</li>
+ *   <li>Uma {@link Pessoa}, que armazena seus dados pessoais.</li>
+ *   <li>Uma lista de {@link Transacao}, que registra suas movimentações financeiras.</li>
  * </ul>
- * </p>
  *
- * <p>O métodoo {@code equals} e {@code hashCode} consideram apenas o campo {@code id}.</p>
+ * <p>Herda de {@link PersistenceEntity}, que fornece um identificador único
+ * gerado automaticamente.</p>
  *
  * @author Jorge Roberto
  */
@@ -35,13 +37,20 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Usuario extends PersistenceEntity implements Serializable {
 
-    @Column(name = "nome", nullable = false)
-    private String nome;
-
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "senha", nullable = false)
     private String senha;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "perfil_id", nullable = false, unique = true)
+    private PerfilDeUsuario perfil;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "pessoa_id", nullable = false,  unique = true)
+    private Pessoa pessoa;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transacao> transacoes = new ArrayList<>();
 }
