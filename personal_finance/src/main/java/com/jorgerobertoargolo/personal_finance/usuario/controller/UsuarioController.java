@@ -101,6 +101,7 @@ public class UsuarioController {
      * @param usuarioPostRequestDto Objeto DTO contendo os dados atualizados do usuário.
      * @return {@link ResponseEntity} com status HTTP 204 (No Content) em caso de sucesso.
      */
+    //TODO: Corrigir esse, pois está dando erro
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update (@RequestBody @Valid UsuarioPostRequestDTO usuarioPostRequestDto) {
         Usuario usuario = objectMapperUtil.map(usuarioPostRequestDto, Usuario.class);
