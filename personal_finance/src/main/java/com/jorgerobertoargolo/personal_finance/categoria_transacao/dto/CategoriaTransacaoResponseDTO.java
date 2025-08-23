@@ -8,6 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO utilizado para representar a resposta da categoria de transação.
+ * Contém apenas o nome da categoria.
+ *
+ * @author Jorge Roberto
+ */
 @Getter
 @Setter
 @AllArgsConstructor

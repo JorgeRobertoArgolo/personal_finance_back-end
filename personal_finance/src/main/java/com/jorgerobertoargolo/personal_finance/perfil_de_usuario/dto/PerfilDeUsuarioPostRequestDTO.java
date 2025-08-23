@@ -5,6 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * DTO utilizado para requisições de criação de perfis de usuário.
+ * Contém os dados necessários para cadastrar um novo perfil.
+ *
+ * @author Jorge Roberto
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

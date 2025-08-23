@@ -12,6 +12,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * DTO de requisição para cadastro ou atualização de usuários.
+ *
+ * <p>Contém os dados básicos de identificação, credenciais e
+ * o perfil de acesso do usuário.</p>
+ *
+ * @author Jorge Roberto
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

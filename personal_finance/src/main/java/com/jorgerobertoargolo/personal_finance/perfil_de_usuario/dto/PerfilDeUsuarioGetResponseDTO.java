@@ -5,6 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO utilizado para retorno de informações de perfil de usuário.
+ * Representa os dados de acesso e descrição do perfil.
+ *
+ * @author Jorge Roberto
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

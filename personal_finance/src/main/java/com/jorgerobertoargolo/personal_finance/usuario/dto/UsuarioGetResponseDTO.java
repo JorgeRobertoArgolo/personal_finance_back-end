@@ -7,6 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO de resposta para retorno de informações do usuário.
+ *
+ * <p>Inclui os dados básicos de identificação,
+ * informações pessoais e perfil de acesso.</p>
+ *
+ * @author Jorge Roberto
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

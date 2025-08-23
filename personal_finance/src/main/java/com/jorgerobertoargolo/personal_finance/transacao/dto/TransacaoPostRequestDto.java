@@ -9,6 +9,12 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * DTO utilizado para requisições de criação e atualização de transações.
+ * Contém os dados necessários para persistir uma transação no sistema.
+ *
+ * @author Jorge Roberto
+ */
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class TransacaoPostRequestDto {

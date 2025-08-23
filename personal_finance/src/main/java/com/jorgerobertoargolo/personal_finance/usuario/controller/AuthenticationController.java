@@ -12,6 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller responsável pela autenticação de usuários.
+ *
+ * <p>Disponibiliza endpoint para autenticação de credenciais,
+ * verificando e-mail e senha do usuário.</p>
+ *
+ * @author Jorge Roberto
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +30,14 @@ public class AuthenticationController {
     private final UsuarioIService usuarioService;
     private final ObjectMapperUtil objectMapperUtil;
 
+    /**
+     * Realiza a autenticação do usuário com base no e-mail e senha informados.
+     *
+     * @param dto Objeto {@link UsuarioLoginDTO} contendo e-mail e senha.
+     * @return {@link ResponseEntity} contendo os dados do usuário autenticado
+     *         ({@link UsuarioGetResponseDTO}) caso as credenciais estejam corretas,
+     *         ou {@link HttpStatus#UNAUTHORIZED} caso contrário.
+     */
     @PostMapping("/auth")
     public ResponseEntity<?> authenticate(@RequestBody @Valid UsuarioLoginDTO dto) {
         Usuario usuario = usuarioService.findByEmail(dto.getEmail());

@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller responsável por gerenciar as transações.
+ * Fornece endpoints para salvar, atualizar, deletar e buscar transações.
+ *
+ * @author Jorge Roberto
+ */
 @RestController
 @RequestMapping(path = "/api/transacao")
 @RequiredArgsConstructor
@@ -27,6 +33,12 @@ public class TransacaoController {
     private final UsuarioService usuarioService;
     private final CategoriaTransacaoRepository categoriaTransacaoRepository;
 
+    /**
+     * Salva uma nova transação.
+     *
+     * @param body DTO contendo os dados da transação.
+     * @return Transação criada ou erro caso não seja possível salvar.
+     */
     @PostMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransacaoResponseDto> save(@RequestBody @Valid TransacaoPostRequestDto body) {
         Transacao transacao = objectMapperUtil.map(body, Transacao.class);
@@ -58,18 +70,37 @@ public class TransacaoController {
         }
     }
 
+    /**
+     * Deleta uma transação pelo ID.
+     *
+     * @param id Identificador da transação.
+     * @return HTTP 204 (No Content) em caso de sucesso.
+     */
     @DeleteMapping(path = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         transacaoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Busca todas as transações do usuário autenticado.
+     *
+     * @param id ID do usuário.
+     * @return Lista de transações.
+     */
     @GetMapping(path = "/getTransactionsByAuthenticated/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TransacaoResponseDto>> getTransactionsByAuthenticated(@PathVariable("id") Long id) {
         List<TransacaoResponseDto> list = transacaoService.getTransactionsByAuthenticated(id);
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * Atualiza uma transação existente.
+     *
+     * @param id ID da transação.
+     * @param body DTO contendo os novos dados.
+     * @return Transação atualizada.
+     */
     @PutMapping(path = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransacaoResponseDto> update(@PathVariable("id") Long id, @RequestBody @Valid TransacaoPostRequestDto body) {
         Transacao transacao = objectMapperUtil.map(body, Transacao.class);

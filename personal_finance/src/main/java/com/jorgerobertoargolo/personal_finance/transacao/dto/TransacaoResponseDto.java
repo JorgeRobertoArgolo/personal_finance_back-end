@@ -11,6 +11,12 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * DTO utilizado para resposta de transações.
+ * Contém os dados da transação que serão retornados ao cliente.
+ *
+ * @author Jorge Roberto
+ */
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class TransacaoResponseDto {

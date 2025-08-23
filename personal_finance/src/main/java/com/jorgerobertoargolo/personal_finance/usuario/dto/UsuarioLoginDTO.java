@@ -5,6 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * DTO utilizado para autenticação de usuário.
+ *
+ * <p>Contém apenas e-mail e senha, necessários
+ * para login no sistema.</p>
+ *
+ * @author Jorge Roberto
+ */
 @Getter
 @Setter
 @NoArgsConstructor
