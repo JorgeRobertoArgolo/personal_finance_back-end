@@ -76,7 +76,7 @@ public class TransacaoController {
      * @param id Identificador da transação.
      * @return HTTP 204 (No Content) em caso de sucesso.
      */
-    @DeleteMapping(path = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         transacaoService.delete(id);
         return ResponseEntity.noContent().build();

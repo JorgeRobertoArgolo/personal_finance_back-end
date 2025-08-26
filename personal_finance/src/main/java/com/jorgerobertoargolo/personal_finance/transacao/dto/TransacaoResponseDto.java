@@ -20,6 +20,10 @@ import java.time.LocalDate;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class TransacaoResponseDto {
+
+    @JsonProperty(value = "id")
+    private Long id;
+
     @JsonProperty(value = "valor")
     private BigDecimal valor;
 
