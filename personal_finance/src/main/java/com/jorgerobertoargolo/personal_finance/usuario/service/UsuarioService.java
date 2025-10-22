@@ -116,8 +116,7 @@ public class UsuarioService implements UsuarioIService {
     public Usuario findByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         if (usuario == null) {
-            throw new BusinessException(String.format(
-                    "Usuário com e-mail {%s} não encontrado.", email));
+            return null;
         }
         return usuario;
     }

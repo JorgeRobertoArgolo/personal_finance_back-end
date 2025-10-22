@@ -29,7 +29,7 @@ class UsuarioServiceTest {
     private Long createdUserId;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioIService usuarioService;
 
     @Autowired
     private ObjectMapperUtil objectMapperUtil;
@@ -199,7 +199,7 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("FIND BY EMAIL: Lança BusinessException ao procurar e-mail inexistente")
     void findByEmail_WithNonexistentEmail_ThrowsBusinessException() {
-        Assertions.assertThrows(BusinessException.class, () -> usuarioService.findByEmail("erro@gmail.com"));
+        Assertions.assertNull(usuarioService.findByEmail("erro@gmail.com"));
     }
 
     @Test
