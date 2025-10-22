@@ -1,6 +1,5 @@
 package com.jorgerobertoargolo.personal_finance.usuario.controller;
 
-import com.jorgerobertoargolo.personal_finance.infrastructure.exception.BusinessException;
 import com.jorgerobertoargolo.personal_finance.infrastructure.mapper.ObjectMapperUtil;
 import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.PerfilDeUsuario;
 import com.jorgerobertoargolo.personal_finance.perfil_de_usuario.entity.enums.NivelAcesso;
@@ -10,8 +9,6 @@ import com.jorgerobertoargolo.personal_finance.usuario.dto.UsuarioLoginDTO;
 import com.jorgerobertoargolo.personal_finance.usuario.entity.Usuario;
 import com.jorgerobertoargolo.personal_finance.usuario.repository.UsuarioRepository;
 import com.jorgerobertoargolo.personal_finance.usuario.service.UsuarioIService;
-import org.apache.coyote.Response;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
